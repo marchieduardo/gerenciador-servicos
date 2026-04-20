@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from .models import Cliente
 
 # Create your views here.
@@ -23,3 +23,10 @@ class DetalhesClienteView(DetailView):
     model = Cliente
     template_name = 'detalhes_cliente.html'
     context_object_name = 'cliente'
+
+
+class EditarClienteView(UpdateView):
+    model = Cliente
+    template_name = 'editar_cliente.html'
+    fields = '__all__'
+    success_url = '/clientes/'
