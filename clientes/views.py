@@ -8,6 +8,9 @@ class ListaClientesView(ListView):
     template_name = 'lista_clientes.html'
     context_object_name = 'clientes'
 
+    def get_queryset(self):
+        return Cliente.objects.filter(ativo=True)
+
 
 class CriarClienteView(CreateView):
     model = Cliente
