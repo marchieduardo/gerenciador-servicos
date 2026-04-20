@@ -21,7 +21,11 @@ class Servico(models.Model):
     ]
     
     id = models.AutoField(primary_key=True)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(
+        Cliente,
+        on_delete=models.PROTECT,
+        related_name='servicos'
+    )
     descricao = models.TextField()
     data = models.DateField()
     valor = models.DecimalField(max_digits=10, decimal_places=2)
