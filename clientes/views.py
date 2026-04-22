@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
+
 from .models import Cliente, Servico
+from .forms import ServicoForm
 
 # Create your views here.
 class ListaClientesView(ListView):
@@ -38,10 +40,14 @@ class EditarClienteView(UpdateView):
 class CriarServicoView(CreateView):
     model = Servico
     template_name = 'criar_servico.html'
-    fields = ['descricao', 'data', 'valor', 'status']
+    form_class = ServicoForm
     
     def dispatch(self, request, *args, **kwargs):
-        self.cliente = get_object_or_404(Cliente, pk=kwargs['pk'], ativo=True)
+        self.cliente = get_object_or_404(
+            Cliente,
+            pk=kwargs['pk'],
+            ativo=True
+        )
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
