@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from .models import Cliente, Servico
@@ -33,3 +33,25 @@ class EditarClienteView(UpdateView):
 
     def get_success_url(self):
         return reverse('detalhes-cliente', kwargs={'pk': self.object.pk})
+
+
+class CriarServicoView(CreateView):
+    model = Servico
+    template_name = 'criar_servico.html'
+    fields = ['descricao', 'data', 'valor', 'status']
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.cliente = get_object_or_404(Cliente, pk=kwargs['pk'], ativo=True)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cliente'] = self.cliente
+        return context
+
+    def form_valid(self, form):
+        form.instance.cliente = self.cliente
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('detalhes-cliente', kwargs={'pk': self.cliente.pk})

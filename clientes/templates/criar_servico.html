@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Serviço</title>
+    <style>
+        form div {
+            margin: 8px 0px 8px 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Novo Serviço para {{ cliente.nome }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div>
+            <label for="{{ form.descricao.id_for_label }}">Descrição</label>
+            {{ form.descricao }}
+            {{ form.descricao.errors }}
+        </div>
+        <div>
+            <label for="{{ form.data.id_for_label }}">Data</label>
+            {{ form.data }}
+            {{ form.data.errors }}
+        </div>
+        <div>
+            <label for="{{ form.valor.id_for_label }}">Valor</label>
+            {{ form.valor }}
+            {{ form.valor.errors }}
+        </div>
+        <div>
+            <label for="{{ form.status.id_for_label }}">Status</label>
+            {{ form.status }}
+            {{ form.status.errors }}
+        </div>
+
+        <div>
+            <button type="submit">Salvar</button>
+        </div>
+    </form>
+
+    <a href="{% url 'detalhes-cliente' cliente.id %}">Cancelar</a>
+</body>
+
+</html>

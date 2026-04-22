@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Cliente</title>
+    <style>
+        body>a {
+            margin: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,6 +33,7 @@
 
     <a href="{% url 'lista-clientes' %}">Voltar</a>
     <a href="{% url 'editar-cliente' cliente.id %}">Editar Cliente</a>
+    <a href="{% url 'novo-servico' cliente.id %}">Novo Serviço</a>
 </body>
 
 </html>
