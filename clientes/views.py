@@ -1,6 +1,7 @@
 from django.shortcuts import render
+from django.urls import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
-from .models import Cliente
+from .models import Cliente, Servico
 
 # Create your views here.
 class ListaClientesView(ListView):
@@ -15,7 +16,7 @@ class ListaClientesView(ListView):
 class CriarClienteView(CreateView):
     model = Cliente
     template_name = 'criar_cliente.html'
-    fields = '__all__'
+    fields = ['nome', 'documento', 'email', 'telefone', 'endereco']
     success_url = '/clientes/'
 
 
@@ -29,4 +30,6 @@ class EditarClienteView(UpdateView):
     model = Cliente
     template_name = 'editar_cliente.html'
     fields = '__all__'
-    success_url = '/clientes/'
+
+    def get_success_url(self):
+        return reverse('detalhes-cliente', kwargs={'pk': self.object.pk})
