@@ -24,7 +24,7 @@
     <ul>
         {% for servico in cliente.servicos.all %}
         <li>
-            {{ servico.descricao }} - {{ servico.data }} - R$ {{ servico.valor }} - {{ servico.status }}
+            {{ servico.descricao }} - {{ servico.data }} - R$ {{ servico.valor }} - {{ servico.get_status_display }}
         </li>
         {% empty %}
         <li>Nenhum serviço cadastrado.</li>
