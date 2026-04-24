@@ -61,3 +61,9 @@ class CriarServicoView(CreateView):
 
     def get_success_url(self):
         return reverse('detalhes-cliente', kwargs={'pk': self.cliente.pk})
+
+
+class ListaServicosView(ListView):
+    model = Servico
+    template_name = 'lista_servicos.html'
+    context_object_name = 'servicos'
