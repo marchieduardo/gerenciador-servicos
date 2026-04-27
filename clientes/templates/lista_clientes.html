@@ -1,28 +1,21 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Clientes</title>
-</head>
+{% block title %}Lista de Clientes{% endblock %}
 
-<body>
-    <h1>Lista de Clientes</h1>
+{% block content %}
+<h1>Lista de Clientes</h1>
 
-    <ul>
-        {% for cliente in clientes %}
-        <li>
-            <a href="{% url 'detalhes-cliente' cliente.id %}">
-                {{ cliente.nome }} - {{ cliente.telefone }}
-            </a>
-        </li>
-        {% empty %}
-        <li>Nenhum cliente cadastrado.</li>
-        {% endfor %}
-    </ul>
+<ul>
+    {% for cliente in clientes %}
+    <li>
+        <a href="{% url 'detalhes-cliente' cliente.id %}">
+            {{ cliente.nome }} - {{ cliente.telefone }}
+        </a>
+    </li>
+    {% empty %}
+    <li>Nenhum cliente cadastrado.</li>
+    {% endfor %}
+</ul>
 
-    <a href="{% url 'novo-cliente' %}">Novo Cliente</a>
-</body>
-
-</html>
+<a href="{% url 'novo-cliente' %}">Novo Cliente</a>
+{% endblock %}

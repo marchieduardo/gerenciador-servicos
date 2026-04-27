@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=vQq5X4E8P2BV&format=png&color=000000"
+        type="image/png">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'lista-clientes' %}">Clientes</a></li>
+                <li><a href="{% url 'lista-servicos' %}">Serviços</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>
+            Desenvolvido por
+            <a href="https://github.com/marchieduardo" target="_blank" rel="noopener noreferrer">
+                Eduardo A. Marchi
+            </a>
+            - 2026
+        </p>
+    </footer>
+</body>
+
+</html>
