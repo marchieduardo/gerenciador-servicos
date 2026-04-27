@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+.obrigatorio {
+    color: red;
+}
+
+nav>ul {
+    list-style-type: none;
+    display: flex;
+}
+
+nav>ul>li {
+    margin: 5px;
+}
+
+main>a {
+    margin: 5px;
+}
+
+form>div {
+    margin: 8px 0px 8px 0px;
+}
+
+footer>p {
+    text-align: center;
+}

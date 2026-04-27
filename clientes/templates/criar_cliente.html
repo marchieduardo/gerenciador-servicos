@@ -1,61 +1,45 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Cliente</title>
-    <style>
-        .obrigatorio {
-            color: red;
-        }
+{% block title %}Novo Cliente{% endblock %}
 
-        form div {
-            margin: 8px 0px 8px 0px;
-        }
-    </style>
-</head>
+{% block content %}
+<h1>Novo Cliente</h1>
 
-<body>
-    <h1>Novo Cliente</h1>
+<small><span class="obrigatorio">*</span> Campo obrigatório</small>
 
-    <small><span class="obrigatorio">*</span> Campo obrigatório</small>
+<form method="post">
+    {% csrf_token %}
 
-    <form method="post">
-        {% csrf_token %}
+    <div>
+        <label for="{{ form.nome.id_for_label }}">Nome <span class="obrigatorio">*</span></label>
+        {{ form.nome }}
+        {{ form.nome.errors }}
+    </div>
+    <div>
+        <label for="{{ form.documento.id_for_label }}">Documento</label>
+        {{ form.documento }}
+        {{ form.documento.errors }}
+    </div>
+    <div>
+        <label for="{{ form.email.id_for_label }}">E-mail</label>
+        {{ form.email }}
+        {{ form.email.errors }}
+    </div>
+    <div>
+        <label for="{{ form.telefone.id_for_label }}">Telefone</label>
+        {{ form.telefone }}
+        {{ form.telefone.errors }}
+    </div>
+    <div>
+        <label for="{{ form.endereco.id_for_label }}">Endereço</label>
+        {{ form.endereco }}
+        {{ form.endereco.errors }}
+    </div>
 
-        <div>
-            <label for="{{ form.nome.id_for_label }}">Nome <span class="obrigatorio">*</span></label>
-            {{ form.nome }}
-            {{ form.nome.errors }}
-        </div>
-        <div>
-            <label for="{{ form.documento.id_for_label }}">Documento</label>
-            {{ form.documento }}
-            {{ form.documento.errors }}
-        </div>
-        <div>
-            <label for="{{ form.email.id_for_label }}">E-mail</label>
-            {{ form.email }}
-            {{ form.email.errors }}
-        </div>
-        <div>
-            <label for="{{ form.telefone.id_for_label }}">Telefone</label>
-            {{ form.telefone }}
-            {{ form.telefone.errors }}
-        </div>
-        <div>
-            <label for="{{ form.endereco.id_for_label }}">Endereço</label>
-            {{ form.endereco }}
-            {{ form.endereco.errors }}
-        </div>
+    <div>
+        <button type="submit">Salvar</button>
+    </div>
+</form>
 
-        <div>
-            <button type="submit">Salvar</button>
-        </div>
-    </form>
-
-    <a href="{% url 'lista-clientes' %}">Cancelar</a>
-</body>
-
-</html>
+<a href="{% url 'lista-clientes' %}">Cancelar</a>
+{% endblock %}

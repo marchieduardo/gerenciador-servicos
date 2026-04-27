@@ -1,39 +1,27 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Cliente</title>
-    <style>
-        body>a {
-            margin: 5px;
-        }
-    </style>
-</head>
+{% block title %}Detalhes do Cliente{% endblock %}
 
-<body>
-    <h1>Detalhes do Cliente</h1>
-    <p><strong>Nome:</strong> {{ cliente.nome }}</p>
-    <p><strong>Documento:</strong> {{ cliente.documento }}</p>
-    <p><strong>Email:</strong> {{ cliente.email }}</p>
-    <p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
-    <p><strong>Endereço:</strong> {{ cliente.endereco }}</p>
+{% block content %}
+<h1>Detalhes do Cliente</h1>
+<p><strong>Nome:</strong> {{ cliente.nome }}</p>
+<p><strong>Documento:</strong> {{ cliente.documento }}</p>
+<p><strong>Email:</strong> {{ cliente.email }}</p>
+<p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
+<p><strong>Endereço:</strong> {{ cliente.endereco }}</p>
 
-    <h2>Serviços</h2>
-    <ul>
-        {% for servico in cliente.servicos.all %}
-        <li>
-            {{ servico.descricao }} - {{ servico.data }} - R$ {{ servico.valor }} - {{ servico.get_status_display }}
-        </li>
-        {% empty %}
-        <li>Nenhum serviço cadastrado.</li>
-        {% endfor %}
-    </ul>
+<h2>Serviços</h2>
+<ul>
+    {% for servico in cliente.servicos.all %}
+    <li>
+        {{ servico.descricao }} - {{ servico.data }} - R$ {{ servico.valor }} - {{ servico.get_status_display }}
+    </li>
+    {% empty %}
+    <li>Nenhum serviço cadastrado.</li>
+    {% endfor %}
+</ul>
 
-    <a href="{% url 'lista-clientes' %}">Voltar</a>
-    <a href="{% url 'editar-cliente' cliente.id %}">Editar Cliente</a>
-    <a href="{% url 'novo-servico' cliente.id %}">Novo Serviço</a>
-</body>
-
-</html>
+<a href="{% url 'lista-clientes' %}">Voltar</a>
+<a href="{% url 'editar-cliente' cliente.id %}">Editar Cliente</a>
+<a href="{% url 'novo-servico' cliente.id %}">Novo Serviço</a>
+{% endblock %}
