@@ -4,7 +4,7 @@
     color: red;
 }
 
-nav ul {
+nav>ul {
     list-style-type: none;
     display: flex;
 }
@@ -17,7 +17,7 @@ main>a {
     margin: 5px;
 }
 
-form div {
+form>div {
     margin: 8px 0px 8px 0px;
 }
 
