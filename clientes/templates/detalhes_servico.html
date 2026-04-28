@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Serviço{% endblock %}
+
+{% block content %}
+
+<h1>Detalhes do Serviço</h1>
+<p><strong>Cliente:</strong> {{ servico.cliente }}</p>
+<p><strong>Descrição:</strong> {{ servico.descricao }}</p>
+<p><strong>Valor:</strong> R$ {{ servico.valor }}</p>
+<p><strong>Data:</strong> {{ servico.data }}</p>
+<p><strong>Status:</strong> {{ servico.get_status_display }}</p>
+
+<a href="{% if voltar_url %}{{ voltar_url }}{% else %}{% url 'lista-servicos' %}{% endif %}">Voltar</a>
+
+{% endblock %}
