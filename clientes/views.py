@@ -6,6 +6,9 @@ from .models import Cliente, Servico
 from .forms import ServicoForm
 
 # Create your views here.
+
+# Views de Clientes
+
 class ListaClientesView(ListView):
     model = Cliente
     template_name = 'lista_clientes.html'
@@ -35,6 +38,9 @@ class EditarClienteView(UpdateView):
 
     def get_success_url(self):
         return reverse('detalhes-cliente', kwargs={'pk': self.object.pk})
+
+
+# Views de Serviços
 
 
 class CriarServicoView(CreateView):
@@ -67,3 +73,9 @@ class ListaServicosView(ListView):
     model = Servico
     template_name = 'lista_servicos.html'
     context_object_name = 'servicos'
+
+
+class DetalhesServicoView(DetailView):
+    model = Servico
+    template_name = 'detalhes_servico.html'
+    context_object_name = 'servico'

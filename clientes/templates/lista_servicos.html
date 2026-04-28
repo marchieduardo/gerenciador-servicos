@@ -7,7 +7,9 @@
 <ul>
     {% for servico in servicos %}
     <li>
-        {{ servico.descricao }} - {{ servico.data }} - R$ {{ servico.valor }} - {{ servico.get_status_display }}
+        <a href="{% url 'detalhes-servico' servico.id %}">
+            {{ servico.cliente }} - {{ servico.data }} - R$ {{servico.valor }} - {{ servico.get_status_display }}
+        </a>
     </li>
     <hr>
     {% empty %}
