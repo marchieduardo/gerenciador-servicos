@@ -79,3 +79,11 @@ class DetalhesServicoView(DetailView):
     model = Servico
     template_name = 'detalhes_servico.html'
     context_object_name = 'servico'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        referer = self.request.META.get('HTTP_REFERER')
+        # Só usamos o referer se ele for diferente da URL atual (evita problemas ao dar refresh)
+        if referer and referer != self.request.build_absolute_uri():
+            context['voltar_url'] = referer
+        return context

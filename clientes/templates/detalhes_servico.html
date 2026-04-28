@@ -11,6 +11,6 @@
 <p><strong>Data:</strong> {{ servico.data }}</p>
 <p><strong>Status:</strong> {{ servico.get_status_display }}</p>
 
-<a href="{% url 'lista-servicos' %}">Voltar para lista de serviços</a>
+<a href="{% if voltar_url %}{{ voltar_url }}{% else %}{% url 'lista-servicos' %}{% endif %}">Voltar</a>
 
 {% endblock %}
