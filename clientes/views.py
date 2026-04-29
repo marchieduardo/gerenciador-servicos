@@ -87,3 +87,12 @@ class DetalhesServicoView(DetailView):
         if referer and referer != self.request.build_absolute_uri():
             context['voltar_url'] = referer
         return context
+
+
+class EditarServicoView(UpdateView):
+    model = Servico
+    template_name = 'editar_servico.html'
+    form_class = ServicoForm
+
+    def get_success_url(self):
+        return reverse('detalhes-servico', kwargs={'pk': self.object.pk})
