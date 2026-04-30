@@ -9,4 +9,5 @@ urlpatterns = [
     path('clientes/<int:pk>/novo-servico/', views.CriarServicoView.as_view(), name='novo-servico'),
     path('servicos/', views.ListaServicosView.as_view(), name='lista-servicos'),
     path('servicos/<int:pk>/', views.DetalhesServicoView.as_view(), name='detalhes-servico'),
+    path('servicos/<int:pk>/editar/', views.EditarServicoView.as_view(), name='editar-servico'),
 ]

@@ -83,7 +83,20 @@ class DetalhesServicoView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         referer = self.request.META.get('HTTP_REFERER')
-        # Só usamos o referer se ele for diferente da URL atual (evita problemas ao dar refresh)
-        if referer and referer != self.request.build_absolute_uri():
-            context['voltar_url'] = referer
+        
+        # Se o referer for válido (não é a própria página e não é edição), salvamos na sessão
+        if referer and referer != self.request.build_absolute_uri() and 'editar' not in referer:
+            self.request.session['servico_voltar_url'] = referer
+            
+        # Recuperamos da sessão o último ponto de origem válido
+        context['voltar_url'] = self.request.session.get('servico_voltar_url')
         return context
+
+
+class EditarServicoView(UpdateView):
+    model = Servico
+    template_name = 'editar_servico.html'
+    form_class = ServicoForm
+
+    def get_success_url(self):
+        return reverse('detalhes-servico', kwargs={'pk': self.object.pk})
