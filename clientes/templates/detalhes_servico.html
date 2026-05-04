@@ -12,6 +12,20 @@
 <p><strong>Data:</strong> {{ servico.data }}</p>
 <p><strong>Status:</strong> {{ servico.get_status_display }}</p>
 
+{% if servico.anexo %}
+<p><strong>Anexo(os):</strong></p>
+{% if servico.is_anexo_image %}
+<p>
+    <a href="{{ servico.anexo.url }}" target="_blank">
+        <img src="{{ servico.anexo.url }}" alt="Anexo do serviço"
+            style="max-width: 100%; height: auto; max-height: 400px; border: 1px solid #ccc; border-radius: 4px; padding: 4px;">
+    </a>
+</p>
+{% else %}
+<p><a href="{{ servico.anexo.url }}" target="_blank">Baixar/Visualizar Arquivo ({{ servico.anexo.name }})</a></p>
+{% endif %}
+{% endif %}
+
 <a href="{% url 'editar-servico' servico.pk %}">Editar Serviço</a>
 <a href="{% if voltar_url %}{{ voltar_url }}{% else %}{% url 'lista-servicos' %}{% endif %}">Voltar</a>
 

@@ -4,7 +4,7 @@ from .models import Servico
 class ServicoForm(forms.ModelForm):
     class Meta:
         model = Servico
-        fields = ['descricao', 'data', 'valor', 'status']
+        fields = ['descricao', 'data', 'valor', 'status', 'anexo']
         widgets = {
             'data': forms.DateInput(attrs={'type': 'date'}),
         }

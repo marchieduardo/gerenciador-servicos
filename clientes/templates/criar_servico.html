@@ -5,7 +5,7 @@
 {% block content %}
 <h1>Novo Serviço para {{ cliente.nome }}</h1>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     <div>
@@ -27,6 +27,11 @@
         <label for="{{ form.status.id_for_label }}">Status</label>
         {{ form.status }}
         {{ form.status.errors }}
+    </div>
+    <div>
+        <label for="{{ form.anexo.id_for_label }}">Anexo</label>
+        {{ form.anexo }}
+        {{ form.anexo.errors }}
     </div>
 
     <div>

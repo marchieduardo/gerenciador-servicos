@@ -31,6 +31,14 @@ class Servico(models.Model):
     data = models.DateField()
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=1, choices=STATUS_SERVICO, default='P')
+    anexo = models.FileField(upload_to='anexos_servicos/', null=True, blank=True)
+
+    @property
+    def is_anexo_image(self):
+        if self.anexo:
+            extensao = self.anexo.name.split('.')[-1].lower()
+            return extensao in ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']
+        return False
 
     def __str__(self):
         return f'{self.cliente} - {self.data}'
