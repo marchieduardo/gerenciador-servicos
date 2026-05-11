@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 
-from .models import Cliente, Servico
+from .models import Cliente, Servico, AnexoServico
 from .forms import ServicoForm
 
 # Create your views here.
@@ -63,7 +63,10 @@ class CriarServicoView(CreateView):
 
     def form_valid(self, form):
         form.instance.cliente = self.cliente
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        for arquivo in self.request.FILES.getlist('anexos'):
+            AnexoServico.objects.create(servico=self.object, arquivo=arquivo)
+        return response
 
     def get_success_url(self):
         return reverse('detalhes-cliente', kwargs={'pk': self.cliente.pk})
@@ -97,6 +100,12 @@ class EditarServicoView(UpdateView):
     model = Servico
     template_name = 'editar_servico.html'
     form_class = ServicoForm
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        for arquivo in self.request.FILES.getlist('anexos'):
+            AnexoServico.objects.create(servico=self.object, arquivo=arquivo)
+        return response
 
     def get_success_url(self):
         return reverse('detalhes-servico', kwargs={'pk': self.object.pk})

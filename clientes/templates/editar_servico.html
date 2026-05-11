@@ -12,6 +12,17 @@
     <button type="submit">Salvar</button>
 </form>
 
+{% if servico.anexos.all %}
+    <h3>Anexos Atuais</h3>
+    <ul>
+        {% for anexo in servico.anexos.all %}
+            <li>
+                <a href="{{ anexo.arquivo.url }}" target="_blank">{{ anexo.arquivo.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <a href="{% url 'detalhes-servico' servico.pk %}">Cancelar</a>
 
 {% endblock %}
