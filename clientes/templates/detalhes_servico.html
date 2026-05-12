@@ -15,24 +15,26 @@
 {% if servico.anexos.all %}
 <p><strong>Anexos:</strong></p>
 <ul>
-{% for anexo in servico.anexos.all %}
+    {% for anexo in servico.anexos.all %}
     <li>
-    {% if anexo.is_image %}
-    <p>
-        <a href="{{ anexo.arquivo.url }}" target="_blank">
-            <img src="{{ anexo.arquivo.url }}" alt="Anexo do serviço"
-                style="max-width: 100%; height: auto; max-height: 400px; border: 1px solid #ccc; border-radius: 4px; padding: 4px;">
-        </a>
-    </p>
-    {% else %}
-    <p><a href="{{ anexo.arquivo.url }}" target="_blank">Baixar/Visualizar Arquivo ({{ anexo.arquivo.name }})</a></p>
-    {% endif %}
+        {% if anexo.is_image %}
+        <p>
+            <a href="{{ anexo.arquivo.url }}" target="_blank">
+                <img src="{{ anexo.arquivo.url }}" alt="Anexo do serviço"
+                    style="max-width: 100%; height: auto; max-height: 400px; border: 1px solid #ccc; border-radius: 4px; padding: 4px;">
+            </a>
+        </p>
+        {% else %}
+        <p><a href="{{ anexo.arquivo.url }}" target="_blank">Baixar/Visualizar Arquivo ({{ anexo.arquivo.name }})</a>
+        </p>
+        {% endif %}
     </li>
-{% endfor %}
+    {% endfor %}
 </ul>
 {% endif %}
 
-<a href="{% url 'editar-servico' servico.pk %}">Editar Serviço</a>
 <a href="{% if voltar_url %}{{ voltar_url }}{% else %}{% url 'lista-servicos' %}{% endif %}">Voltar</a>
+<a href="{% url 'editar-servico' servico.pk %}">Editar Serviço</a>
+<a href="{% url 'excluir-servico' servico.pk %}">Excluir Serviço</a>
 
 {% endblock %}

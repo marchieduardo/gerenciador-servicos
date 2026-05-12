@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
 from .models import Cliente, Servico, AnexoServico
 from .forms import ServicoForm
@@ -109,3 +109,12 @@ class EditarServicoView(UpdateView):
 
     def get_success_url(self):
         return reverse('detalhes-servico', kwargs={'pk': self.object.pk})
+
+
+class ExcluirServicoView(DeleteView):
+    model = Servico
+    template_name = 'excluir_servico.html'
+    context_object_name = 'servico'
+
+    def get_success_url(self):
+        return reverse('lista-servicos')
