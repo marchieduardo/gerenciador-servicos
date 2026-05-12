@@ -36,7 +36,7 @@ class ServicoForm(forms.ModelForm):
         model = Servico
         fields = ['descricao', 'data', 'valor', 'status']
         widgets = {
-            'data': forms.DateInput(attrs={'type': 'date'}),
+            'data': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
         }
 
     def clean_descricao(self):
