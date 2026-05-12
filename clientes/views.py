@@ -87,8 +87,8 @@ class DetalhesServicoView(DetailView):
         context = super().get_context_data(**kwargs)
         referer = self.request.META.get('HTTP_REFERER')
         
-        # Se o referer for válido (não é a própria página e não é edição), salvamos na sessão
-        if referer and referer != self.request.build_absolute_uri() and 'editar' not in referer:
+        # Se o referer for válido (não é a própria página, edição ou exclusão), salvamos na sessão
+        if referer and referer != self.request.build_absolute_uri() and 'editar' not in referer and 'excluir' not in referer:
             self.request.session['servico_voltar_url'] = referer
             
         # Recuperamos da sessão o último ponto de origem válido
