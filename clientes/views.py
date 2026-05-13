@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
@@ -118,3 +119,20 @@ class ExcluirServicoView(DeleteView):
 
     def get_success_url(self):
         return reverse('lista-servicos')
+
+
+class ExcluirAnexoView(DeleteView):
+    model = AnexoServico
+
+    def delete(self, request, *args, **kwargs):
+        # Captura o objeto para remover o arquivo físico antes de deletar o registro
+        self.object = self.get_object()
+        if self.object.arquivo:
+            self.object.arquivo.delete()  # Remove o arquivo físico do disco
+        
+        self.object.delete()  # Remove o registro do banco de dados
+        
+        return JsonResponse({'status': 'success'})
+
+    def get_success_url(self):
+        return reverse('detalhes-servico', kwargs={'pk': self.object.servico.pk})

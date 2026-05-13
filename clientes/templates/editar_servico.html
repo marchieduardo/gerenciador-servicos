@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Editar Serviço{% endblock %}
 
@@ -9,20 +10,37 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+
+    <!-- Lista de novos arquivos selecionados para preview -->
+    <ul id="lista-novos-anexos"></ul>
+
     <button type="submit">Salvar</button>
 </form>
 
 {% if servico.anexos.all %}
-    <h3>Anexos Atuais</h3>
-    <ul>
-        {% for anexo in servico.anexos.all %}
-            <li>
-                <a href="{{ anexo.arquivo.url }}" target="_blank">{{ anexo.arquivo.name }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+<h3>Anexos Atuais</h3>
+<ul>
+    {% for anexo in servico.anexos.all %}
+    <li id="anexo-{{ anexo.pk }}">
+        <a href="{{ anexo.arquivo.url }}" target="_blank">{{ anexo.arquivo.name }}</a>
+        <!-- Chama a função externa para excluir via AJAX, evitando perda de dados no form -->
+        <button type="button"
+            onclick="excluirAnexoExistente('{% url 'excluir-anexo' anexo.pk %}', 'anexo-{{ anexo.pk }}', '{{ csrf_token }}')">
+            Excluir
+        </button>
+    </li>
+    {% endfor %}
+</ul>
 {% endif %}
 
 <a href="{% url 'detalhes-servico' servico.pk %}">Cancelar</a>
 
+
+<script src="{% static 'clientes/js/gerenciar_anexos.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Inicializa o preview de anexos
+        inicializarGerenciadorAnexos('#{{ form.anexos.id_for_label }}', '#lista-novos-anexos');
+    });
+</script>
 {% endblock %}
