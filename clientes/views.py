@@ -125,13 +125,8 @@ class ExcluirAnexoView(DeleteView):
     model = AnexoServico
 
     def delete(self, request, *args, **kwargs):
-        # Captura o objeto para remover o arquivo físico antes de deletar o registro
         self.object = self.get_object()
-        if self.object.arquivo:
-            self.object.arquivo.delete()  # Remove o arquivo físico do disco
-        
-        self.object.delete()  # Remove o registro do banco de dados
-        
+        self.object.delete()  # Apaga o anexo do banco de dados e dispara o signal para apagar o arquivo físico
         return JsonResponse({'status': 'success'})
 
     def get_success_url(self):
