@@ -6,8 +6,6 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from .models import Cliente, Servico, AnexoServico
 from .forms import ServicoForm
 
-# Create your views here.
-
 # Views de Clientes
 
 class ListaClientesView(ListView):
@@ -15,6 +13,7 @@ class ListaClientesView(ListView):
     template_name = 'lista_clientes.html'
     context_object_name = 'clientes'
 
+    # Retorna a lista de clientes que estão marcados como ativos
     def get_queryset(self):
         return Cliente.objects.filter(ativo=True)
 
@@ -49,6 +48,7 @@ class CriarServicoView(CreateView):
     template_name = 'criar_servico.html'
     form_class = ServicoForm
     
+    # Inicializa a view garantindo que o cliente exista e esteja ativo
     def dispatch(self, request, *args, **kwargs):
         self.cliente = get_object_or_404(
             Cliente,
@@ -57,11 +57,13 @@ class CriarServicoView(CreateView):
         )
         return super().dispatch(request, *args, **kwargs)
 
+    # Adiciona o objeto cliente ao contexto do template
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['cliente'] = self.cliente
         return context
 
+    # Associa o serviço ao cliente e processa o upload de múltiplos anexos
     def form_valid(self, form):
         form.instance.cliente = self.cliente
         response = super().form_valid(form)
@@ -84,6 +86,7 @@ class DetalhesServicoView(DetailView):
     template_name = 'detalhes_servico.html'
     context_object_name = 'servico'
 
+    # Gerencia a URL de retorno na sessão para navegação inteligente
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         referer = self.request.META.get('HTTP_REFERER')
@@ -102,6 +105,7 @@ class EditarServicoView(UpdateView):
     template_name = 'editar_servico.html'
     form_class = ServicoForm
 
+    # Salva as alterações do serviço e processa novos anexos enviados
     def form_valid(self, form):
         response = super().form_valid(form)
         for arquivo in self.request.FILES.getlist('anexos'):
@@ -124,15 +128,16 @@ class ExcluirServicoView(DeleteView):
         if voltar_url:
             return voltar_url
             
-        return reverse('lista-servicos')
+        return reverse('lista-servicos') # fallback
 
 
 class ExcluirAnexoView(DeleteView):
     model = AnexoServico
 
+    # Realiza a exclusão lógica/física do anexo via requisição AJAX
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        self.object.delete()  # Apaga o anexo do banco de dados e dispara o signal para apagar o arquivo físico
+        self.object.delete()  # Apaga o anexo do banco de dados, disparando o signal para apagar o arquivo físico
         return JsonResponse({'status': 'success'})
 
     def get_success_url(self):
