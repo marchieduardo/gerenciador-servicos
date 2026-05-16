@@ -71,7 +71,17 @@ function excluirAnexoExistente(url, anexoId, csrftoken) {
         if (response.ok) {
             // Se a exclusão no servidor funcionou, removemos o item da lista na tela
             const elemento = document.getElementById(anexoId);
-            if (elemento) elemento.remove();
+            if (elemento) {
+                const lista = elemento.parentElement;
+                elemento.remove();
+
+                // Se a lista de anexos atuais ficar vazia, oculta o título e a lista
+                if (lista && lista.children.length === 0) {
+                    const titulo = document.getElementById('titulo-anexos-atuais');
+                    if (titulo) titulo.style.display = 'none';
+                    lista.style.display = 'none';
+                }
+            }
         } else {
             alert('Erro ao excluir anexo.');
         }

@@ -18,8 +18,8 @@
 </form>
 
 {% if servico.anexos.all %}
-<h3>Anexos Atuais</h3>
-<ul>
+<h3 id="titulo-anexos-atuais">Anexos Atuais</h3>
+<ul id="lista-anexos-atuais">
     {% for anexo in servico.anexos.all %}
     <li id="anexo-{{ anexo.pk }}">
         <a href="{{ anexo.arquivo.url }}" target="_blank">{{ anexo.arquivo.name }}</a>
