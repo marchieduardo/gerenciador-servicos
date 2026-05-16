@@ -118,6 +118,12 @@ class ExcluirServicoView(DeleteView):
     context_object_name = 'servico'
 
     def get_success_url(self):
+        # Recuperamos da sessão o último ponto de origem válido
+        voltar_url = self.request.session.get('servico_voltar_url')
+        
+        if voltar_url:
+            return voltar_url
+            
         return reverse('lista-servicos')
 
 
