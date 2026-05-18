@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_servicos.html' %}
 
 {% block title %}Detalhes do Serviço{% endblock %}
 
@@ -18,14 +18,22 @@
     {% for anexo in servico.anexos.all %}
     <li>
         {% if anexo.is_image %}
+        <figure>
+            <a href="{{ anexo.arquivo.url }}" target="_blank">
+                <img src="{{ anexo.arquivo.url }}" alt="Anexo do serviço" class="anexo-midia">
+            </a>
+        </figure>
+        {% elif anexo.is_video %}
+        <figure>
+            <video src="{{ anexo.arquivo.url }}" controls class="anexo-midia">
+                Seu navegador não suporta a reprodução de vídeos.
+            </video>
+        </figure>
+        {% else %}
         <p>
             <a href="{{ anexo.arquivo.url }}" target="_blank">
-                <img src="{{ anexo.arquivo.url }}" alt="Anexo do serviço"
-                    style="max-width: 100%; height: auto; max-height: 400px; border: 1px solid #ccc; border-radius: 4px; padding: 4px;">
+                Baixar/Visualizar Arquivo ({{ anexo.arquivo.name }})
             </a>
-        </p>
-        {% else %}
-        <p><a href="{{ anexo.arquivo.url }}" target="_blank">Baixar/Visualizar Arquivo ({{ anexo.arquivo.name }})</a>
         </p>
         {% endif %}
     </li>

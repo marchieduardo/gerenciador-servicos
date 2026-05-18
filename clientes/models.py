@@ -47,5 +47,12 @@ class AnexoServico(models.Model):
             return extensao in ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']
         return False
 
+    @property
+    def is_video(self):
+        if self.arquivo:
+            extensao = self.arquivo.name.split('.')[-1].lower()
+            return extensao in ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv']
+        return False
+
     def __str__(self):
         return self.arquivo.name
