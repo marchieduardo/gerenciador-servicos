@@ -57,10 +57,12 @@ class CriarServicoView(CreateView):
         )
         return super().dispatch(request, *args, **kwargs)
 
-    # Adiciona o objeto cliente ao contexto do template
+    # Adiciona o objeto cliente e extensões permitidas ao contexto do template
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['cliente'] = self.cliente
+        context['extensoes_imagem'] = AnexoServico.EXTENSOES_IMAGEM
+        context['extensoes_video'] = AnexoServico.EXTENSOES_VIDEO
         return context
 
     # Associa o serviço ao cliente e processa o upload de múltiplos anexos
@@ -104,6 +106,12 @@ class EditarServicoView(UpdateView):
     model = Servico
     template_name = 'editar_servico.html'
     form_class = ServicoForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['extensoes_imagem'] = AnexoServico.EXTENSOES_IMAGEM
+        context['extensoes_video'] = AnexoServico.EXTENSOES_VIDEO
+        return context
 
     # Salva as alterações do serviço e processa novos anexos enviados
     def form_valid(self, form):

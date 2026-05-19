@@ -37,6 +37,9 @@ class Servico(models.Model):
 
 
 class AnexoServico(models.Model):
+    EXTENSOES_IMAGEM = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']
+    EXTENSOES_VIDEO = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv']
+
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE, related_name='anexos')
     arquivo = models.FileField(upload_to='anexos_servicos/')
 
@@ -44,14 +47,14 @@ class AnexoServico(models.Model):
     def is_image(self):
         if self.arquivo:
             extensao = self.arquivo.name.split('.')[-1].lower()
-            return extensao in ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']
+            return extensao in self.EXTENSOES_IMAGEM
         return False
 
     @property
     def is_video(self):
         if self.arquivo:
             extensao = self.arquivo.name.split('.')[-1].lower()
-            return extensao in ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv']
+            return extensao in self.EXTENSOES_VIDEO
         return False
 
     def __str__(self):

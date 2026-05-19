@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_servicos.html' %}
 {% load static %}
 
 {% block title %}Novo Serviço{% endblock %}
@@ -44,13 +44,4 @@
 </form>
 
 <a href="{% url 'detalhes-cliente' cliente.id %}">Cancelar</a>
-
-
-<script src="{% static 'clientes/js/gerenciar_anexos.js' %}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Inicializa o preview de anexos passando os seletores do input e da lista
-        inicializarGerenciadorAnexos('#{{ form.anexos.id_for_label }}', '#lista-novos-anexos');
-    });
-</script>
 {% endblock %}

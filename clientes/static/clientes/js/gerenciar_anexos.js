@@ -5,7 +5,7 @@
  * e com a exclusão de anexos existentes via AJAX.
  */
 
-function inicializarGerenciadorAnexos(inputSelector, listaSelector) {
+function inicializarGerenciadorAnexos(inputSelector, listaSelector, extensoesImagem = [], extensoesVideo = []) {
     const inputAnexos = document.querySelector(inputSelector);
     const listaAnexos = document.querySelector(listaSelector);
 
@@ -31,12 +31,46 @@ function inicializarGerenciadorAnexos(inputSelector, listaSelector) {
 
         Array.from(dataTransfer.files).forEach(function (arquivo, indice) {
             const li = document.createElement('li');
-            li.textContent = arquivo.name;
+
+            // Renderiza preview conforme o tipo de arquivo
+            const previewUrl = URL.createObjectURL(arquivo);
+
+            // Obtém a extensão do arquivo como fallback caso o navegador não detecte o MIME Type (muito comum no Windows)
+            const extensao = arquivo.name.split('.').pop().toLowerCase();
+            const isImage = arquivo.type.startsWith('image/') || extensoesImagem.includes(extensao);
+            const isVideo = arquivo.type.startsWith('video/') || extensoesVideo.includes(extensao);
+
+            if (isImage) {
+                const figure = document.createElement('figure');
+                const link = document.createElement('a');
+                link.href = previewUrl;
+                link.target = '_blank';
+                const img = document.createElement('img');
+                img.src = previewUrl;
+                img.alt = arquivo.name;
+                img.className = 'anexo-midia';
+                link.appendChild(img);
+                figure.appendChild(link);
+                li.appendChild(figure);
+            } else if (isVideo) {
+                const figure = document.createElement('figure');
+                const video = document.createElement('video');
+                video.src = previewUrl;
+                video.controls = true;
+                video.className = 'anexo-midia';
+                video.textContent = 'Seu navegador não suporta a reprodução de vídeos.';
+                figure.appendChild(video);
+                li.appendChild(figure);
+            } else {
+                li.textContent = arquivo.name;
+            }
 
             const btnRemover = document.createElement('button');
             btnRemover.textContent = 'Remover';
             btnRemover.type = 'button';
             btnRemover.addEventListener('click', function () {
+                // Libera a URL de preview para evitar vazamento de memória
+                URL.revokeObjectURL(previewUrl);
                 // Remove o item do DataTransfer e atualiza o input
                 dataTransfer.items.remove(indice);
                 inputAnexos.files = dataTransfer.files;
@@ -67,27 +101,27 @@ function excluirAnexoExistente(url, anexoId, csrftoken) {
             'X-Requested-With': 'XMLHttpRequest'
         }
     })
-    .then(response => {
-        if (response.ok) {
-            // Se a exclusão no servidor funcionou, removemos o item da lista na tela
-            const elemento = document.getElementById(anexoId);
-            if (elemento) {
-                const lista = elemento.parentElement;
-                elemento.remove();
+        .then(response => {
+            if (response.ok) {
+                // Se a exclusão no servidor funcionou, removemos o item da lista na tela
+                const elemento = document.getElementById(anexoId);
+                if (elemento) {
+                    const lista = elemento.parentElement;
+                    elemento.remove();
 
-                // Se a lista de anexos atuais ficar vazia, oculta o título e a lista
-                if (lista && lista.children.length === 0) {
-                    const titulo = document.getElementById('titulo-anexos-atuais');
-                    if (titulo) titulo.style.display = 'none';
-                    lista.style.display = 'none';
+                    // Se a lista de anexos atuais ficar vazia, oculta o título e a lista
+                    if (lista && lista.children.length === 0) {
+                        const titulo = document.getElementById('titulo-anexos-atuais');
+                        if (titulo) titulo.style.display = 'none';
+                        lista.style.display = 'none';
+                    }
                 }
+            } else {
+                alert('Erro ao excluir anexo.');
             }
-        } else {
-            alert('Erro ao excluir anexo.');
-        }
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        alert('Erro de comunicação com o servidor.');
-    });
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro de comunicação com o servidor.');
+        });
 }

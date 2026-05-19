@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_servicos.html' %}
 {% load static %}
 
 {% block title %}Editar Serviço{% endblock %}
@@ -22,7 +22,21 @@
 <ul id="lista-anexos-atuais">
     {% for anexo in servico.anexos.all %}
     <li id="anexo-{{ anexo.pk }}">
+        {% if anexo.is_image %}
+        <figure>
+            <a href="{{ anexo.arquivo.url }}" target="_blank">
+                <img src="{{ anexo.arquivo.url }}" alt="Anexo do serviço" class="anexo-midia">
+            </a>
+        </figure>
+        {% elif anexo.is_video %}
+        <figure>
+            <video src="{{ anexo.arquivo.url }}" controls class="anexo-midia">
+                Seu navegador não suporta a reprodução de vídeos.
+            </video>
+        </figure>
+        {% else %}
         <a href="{{ anexo.arquivo.url }}" target="_blank">{{ anexo.arquivo.name }}</a>
+        {% endif %}
         <!-- Chama a função externa para excluir via AJAX, evitando perda de dados no form -->
         <button type="button"
             onclick="excluirAnexoExistente('{% url 'excluir-anexo' anexo.pk %}', 'anexo-{{ anexo.pk }}', '{{ csrf_token }}')">
@@ -34,13 +48,4 @@
 {% endif %}
 
 <a href="{% url 'detalhes-servico' servico.pk %}">Cancelar</a>
-
-
-<script src="{% static 'clientes/js/gerenciar_anexos.js' %}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Inicializa o preview de anexos
-        inicializarGerenciadorAnexos('#{{ form.anexos.id_for_label }}', '#lista-novos-anexos');
-    });
-</script>
 {% endblock %}
