@@ -49,6 +49,9 @@ function inicializarGerenciadorAnexos(inputSelector, listaSelector, extensoesIma
                 img.src = previewUrl;
                 img.alt = arquivo.name;
                 img.className = 'anexo-midia';
+                img.onerror = function () {
+                    lidarErroMidia(img, arquivo.name, previewUrl);
+                };
                 link.appendChild(img);
                 figure.appendChild(link);
                 li.appendChild(figure);
@@ -58,7 +61,9 @@ function inicializarGerenciadorAnexos(inputSelector, listaSelector, extensoesIma
                 video.src = previewUrl;
                 video.controls = true;
                 video.className = 'anexo-midia';
-                video.textContent = 'Seu navegador não suporta a reprodução de vídeos.';
+                video.onerror = function () {
+                    lidarErroMidia(video, arquivo.name, previewUrl);
+                };
                 figure.appendChild(video);
                 li.appendChild(figure);
             } else {
@@ -124,4 +129,38 @@ function excluirAnexoExistente(url, anexoId, csrftoken) {
             console.error('Erro:', error);
             alert('Erro de comunicação com o servidor.');
         });
+}
+
+/**
+ * Trata erros de renderização de mídia (imagem/vídeo) exibindo um fallback amigável.
+ * 
+ * @param {HTMLElement} elemento - O elemento img ou video que falhou.
+ * @param {string} nomeArquivo - O nome do arquivo a ser exibido.
+ * @param {string} urlArquivo - A URL de download/visualização do arquivo.
+ */
+function lidarErroMidia(elemento, nomeArquivo, urlArquivo) {
+    const container = elemento.closest('figure') || elemento.parentElement;
+    if (container) {
+        // Evita duplicar a mensagem de erro caso o evento de erro seja disparado múltiplas vezes
+        if (container.querySelector('.erro-renderizacao-anexo')) {
+            return;
+        }
+
+        const divFallback = document.createElement('div');
+        divFallback.className = 'erro-renderizacao-anexo';
+
+        const msg = document.createElement('span');
+        msg.textContent = 'Não foi possível carregar a pré-visualização deste arquivo.';
+
+        const link = document.createElement('a');
+        link.href = urlArquivo;
+        link.target = '_blank';
+        link.textContent = 'Baixar/Visualizar: ' + nomeArquivo;
+
+        divFallback.appendChild(msg);
+        divFallback.appendChild(link);
+
+        container.innerHTML = '';
+        container.appendChild(divFallback);
+    }
 }

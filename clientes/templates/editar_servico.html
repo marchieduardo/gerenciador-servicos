@@ -25,14 +25,12 @@
         {% if anexo.is_image %}
         <figure>
             <a href="{{ anexo.arquivo.url }}" target="_blank">
-                <img src="{{ anexo.arquivo.url }}" alt="Anexo do serviço" class="anexo-midia">
+                <img src="{{ anexo.arquivo.url }}" alt="Anexo do serviço" class="anexo-midia" onerror="lidarErroMidia(this, '{{ anexo.arquivo.name|escapejs }}', '{{ anexo.arquivo.url|escapejs }}')">
             </a>
         </figure>
         {% elif anexo.is_video %}
         <figure>
-            <video src="{{ anexo.arquivo.url }}" controls class="anexo-midia">
-                Seu navegador não suporta a reprodução de vídeos.
-            </video>
+            <video src="{{ anexo.arquivo.url }}" controls class="anexo-midia" onerror="lidarErroMidia(this, '{{ anexo.arquivo.name|escapejs }}', '{{ anexo.arquivo.url|escapejs }}')"></video>
         </figure>
         {% else %}
         <a href="{{ anexo.arquivo.url }}" target="_blank">{{ anexo.arquivo.name }}</a>
