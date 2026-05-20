@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+#lista-anexos-atuais>li,
+#lista-novos-anexos>li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.anexo-midia {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.erro-renderizacao-anexo {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    border: 1px dashed #d9534f;
+    border-radius: 4px;
+    background-color: #fdf7f7;
+    margin-bottom: 8px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.erro-renderizacao-anexo span {
+    color: #d9534f;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.erro-renderizacao-anexo a {
+    color: #0275d8;
+    text-decoration: underline;
+    word-break: break-all;
+    font-size: 0.9rem;
+}
+
+.erro-renderizacao-anexo a:hover {
+    color: #014c8c;
+}

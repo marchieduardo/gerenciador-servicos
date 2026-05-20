@@ -1,11 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'base_servicos.html' %}
+{% load static %}
 
 {% block title %}Novo Serviço{% endblock %}
 
 {% block content %}
 <h1>Novo Serviço para {{ cliente.nome }}</h1>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     <div>
@@ -28,6 +29,14 @@
         {{ form.status }}
         {{ form.status.errors }}
     </div>
+    <div>
+        <label for="{{ form.anexos.id_for_label }}">Anexos</label>
+        {{ form.anexos }}
+        {{ form.anexos.errors }}
+    </div>
+
+    <!-- Lista de arquivos selecionados para preview -->
+    <ul id="lista-novos-anexos"></ul>
 
     <div>
         <button type="submit">Salvar</button>

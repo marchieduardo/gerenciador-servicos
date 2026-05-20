@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+{% extends 'base_servicos.html' %}
+{% load static %}
 
 {% block title %}Editar Serviço{% endblock %}
 
@@ -6,12 +7,43 @@
 
 <h1>Editar Serviço</h1>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+
+    <!-- Lista de novos arquivos selecionados para preview -->
+    <ul id="lista-novos-anexos"></ul>
+
     <button type="submit">Salvar</button>
 </form>
 
-<a href="{% url 'detalhes-servico' servico.pk %}">Cancelar</a>
+{% if servico.anexos.all %}
+<h3 id="titulo-anexos-atuais">Anexos Atuais</h3>
+<ul id="lista-anexos-atuais">
+    {% for anexo in servico.anexos.all %}
+    <li id="anexo-{{ anexo.pk }}">
+        {% if anexo.is_image %}
+        <figure>
+            <a href="{{ anexo.arquivo.url }}" target="_blank">
+                <img src="{{ anexo.arquivo.url }}" alt="Anexo do serviço" class="anexo-midia" onerror="lidarErroMidia(this, '{{ anexo.arquivo.name|escapejs }}', '{{ anexo.arquivo.url|escapejs }}')">
+            </a>
+        </figure>
+        {% elif anexo.is_video %}
+        <figure>
+            <video src="{{ anexo.arquivo.url }}" controls class="anexo-midia" onerror="lidarErroMidia(this, '{{ anexo.arquivo.name|escapejs }}', '{{ anexo.arquivo.url|escapejs }}')"></video>
+        </figure>
+        {% else %}
+        <a href="{{ anexo.arquivo.url }}" target="_blank">{{ anexo.arquivo.name }}</a>
+        {% endif %}
+        <!-- Chama a função externa para excluir via AJAX, evitando perda de dados no form -->
+        <button type="button"
+            onclick="excluirAnexoExistente('{% url 'excluir-anexo' anexo.pk %}', 'anexo-{{ anexo.pk }}', '{{ csrf_token }}')">
+            Excluir
+        </button>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
 
+<a href="{% url 'detalhes-servico' servico.pk %}">Cancelar</a>
 {% endblock %}

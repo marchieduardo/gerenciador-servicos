@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_servicos.html' %}
 
 {% block title %}Detalhes do Serviço{% endblock %}
 
@@ -12,7 +12,35 @@
 <p><strong>Data:</strong> {{ servico.data }}</p>
 <p><strong>Status:</strong> {{ servico.get_status_display }}</p>
 
-<a href="{% url 'editar-servico' servico.pk %}">Editar Serviço</a>
+{% if servico.anexos.all %}
+<p><strong>Anexos:</strong></p>
+<ul>
+    {% for anexo in servico.anexos.all %}
+    <li>
+        {% if anexo.is_image %}
+        <figure>
+            <a href="{{ anexo.arquivo.url }}" target="_blank">
+                <img src="{{ anexo.arquivo.url }}" alt="Anexo do serviço" class="anexo-midia" onerror="lidarErroMidia(this, '{{ anexo.arquivo.name|escapejs }}', '{{ anexo.arquivo.url|escapejs }}')">
+            </a>
+        </figure>
+        {% elif anexo.is_video %}
+        <figure>
+            <video src="{{ anexo.arquivo.url }}" controls class="anexo-midia" onerror="lidarErroMidia(this, '{{ anexo.arquivo.name|escapejs }}', '{{ anexo.arquivo.url|escapejs }}')"></video>
+        </figure>
+        {% else %}
+        <p>
+            <a href="{{ anexo.arquivo.url }}" target="_blank">
+                Baixar/Visualizar Arquivo ({{ anexo.arquivo.name }})
+            </a>
+        </p>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <a href="{% if voltar_url %}{{ voltar_url }}{% else %}{% url 'lista-servicos' %}{% endif %}">Voltar</a>
+<a href="{% url 'editar-servico' servico.pk %}">Editar Serviço</a>
+<a href="{% url 'excluir-servico' servico.pk %}">Excluir Serviço</a>
 
 {% endblock %}

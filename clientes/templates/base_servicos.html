@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'clientes/css/servicos.css' %}">
+<script src="{% static 'clientes/js/gerenciar_anexos.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Inicializa o preview de anexos passando os seletores do input, da lista e as extensões permitidas
+        {% if form.anexos %}
+        inicializarGerenciadorAnexos(
+            '#{{ form.anexos.id_for_label }}',
+            '#lista-novos-anexos',
+            {{ extensoes_imagem|default:"[]"|safe }},
+            {{ extensoes_video|default:"[]"|safe }}
+        );
+        {% endif %}
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir Serviço{% endblock %}
+
+{% block content %}
+<h1>Excluir Serviço</h1>
+
+<p>Tem certeza que deseja excluir o serviço de {{ servico.cliente.nome }} do dia {{ servico.data }}?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Excluir</button>
+    <a href="{% url 'detalhes-servico' servico.pk %}">Cancelar</a>
+</form>
+
+{% endblock %}
