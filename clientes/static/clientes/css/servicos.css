@@ -1,5 +1,12 @@
 @charset "UTF-8";
 
+#lista-anexos-atuais>li,
+#lista-novos-anexos>li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .anexo-midia {
     max-width: 100%;
     height: auto;
