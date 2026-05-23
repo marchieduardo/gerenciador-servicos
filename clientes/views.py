@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.db.models import Q
 
 from .models import Cliente, Servico, AnexoServico
 from .forms import ServicoForm
@@ -13,9 +14,30 @@ class ListaClientesView(ListView):
     template_name = 'lista_clientes.html'
     context_object_name = 'clientes'
 
-    # Retorna a lista de clientes que estão marcados como ativos
+    # Retorna a lista de clientes, permitindo filtro por status (ativo/inativo) e busca textual
     def get_queryset(self):
-        return Cliente.objects.filter(ativo=True)
+        queryset = Cliente.objects.all()
+        
+        # Filtro por status (padrão é mostrar apenas os ativos)
+        status_filter = self.request.GET.get('ativo', 'True')
+        if status_filter == 'True':
+            queryset = queryset.filter(ativo=True)
+        elif status_filter == 'False':
+            queryset = queryset.filter(ativo=False)
+        # Se for diferente de 'True' ou 'False' (Ex: 'Todos'), não aplica filtro de status
+            
+        # Busca textual em múltiplos campos (nome, documento, email, telefone, endereco)
+        search_query = self.request.GET.get('q', '').strip()
+        if search_query:
+            queryset = queryset.filter(
+                Q(nome__icontains=search_query) |
+                Q(documento__icontains=search_query) |
+                Q(email__icontains=search_query) |
+                Q(telefone__icontains=search_query) |
+                Q(endereco__icontains=search_query)
+            )
+            
+        return queryset
 
 
 class CriarClienteView(CreateView):
@@ -81,6 +103,25 @@ class ListaServicosView(ListView):
     model = Servico
     template_name = 'lista_servicos.html'
     context_object_name = 'servicos'
+
+    # Retorna a lista de serviços, permitindo filtro por status e busca textual
+    def get_queryset(self):
+        queryset = Servico.objects.all()
+        
+        # Filtro de Texto (Nome do cliente ou descrição do serviço)
+        search_query = self.request.GET.get('q', '').strip()
+        if search_query:
+            queryset = queryset.filter(
+                Q(cliente__nome__icontains=search_query) |
+                Q(descricao__icontains=search_query)
+            )
+            
+        # Filtro por Status do Serviço
+        status_filter = self.request.GET.get('status', '').strip()
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
+            
+        return queryset
 
 
 class DetalhesServicoView(DetailView):

@@ -5,6 +5,23 @@
 {% block content %}
 <h1>Lista de Clientes</h1>
 
+<form method="get">
+    <!-- Busca textual ampla -->
+    <input type="text" name="q" placeholder="Buscar nome, telefone, email..." value="{{ request.GET.q|default:'' }}">
+
+    <!-- Filtro de status do cliente -->
+    <select name="ativo">
+        <option value="Todos" {% if request.GET.ativo == 'Todos' %}selected{% endif %}>Todos os Status</option>
+        <option value="True" {% if request.GET.ativo == 'True' or not request.GET.ativo %}selected{% endif %}>Ativos</option>
+        <option value="False" {% if request.GET.ativo == 'False' %}selected{% endif %}>Inativos</option>
+    </select>
+
+    <button type="submit">Filtrar</button>
+    {% if request.GET.q or request.GET.ativo and request.GET.ativo != 'True' %}
+    <a href="{% url 'lista-clientes' %}">Limpar Filtros</a>
+    {% endif %}
+</form>
+
 <ul>
     {% for cliente in clientes %}
     <li>
