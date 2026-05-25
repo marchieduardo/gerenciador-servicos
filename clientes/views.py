@@ -104,7 +104,7 @@ class ListaServicosView(ListView):
     template_name = 'lista_servicos.html'
     context_object_name = 'servicos'
 
-    # Retorna a lista de serviços, permitindo filtro por status e busca textual
+    # Retorna a lista de serviços, permitindo filtro por status, busca textual e ordenação
     def get_queryset(self):
         queryset = Servico.objects.all()
         
@@ -120,6 +120,13 @@ class ListaServicosView(ListView):
         status_filter = self.request.GET.get('status', '').strip()
         if status_filter:
             queryset = queryset.filter(status=status_filter)
+            
+        # Ordenação por data (padrão: mais recentes primeiro)
+        ordem = self.request.GET.get('ordem', 'desc')
+        if ordem == 'asc':
+            queryset = queryset.order_by('data')
+        else:
+            queryset = queryset.order_by('-data')
             
         return queryset
 

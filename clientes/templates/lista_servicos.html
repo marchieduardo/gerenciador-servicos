@@ -17,10 +17,16 @@
         <option value="X" {% if request.GET.status == 'X' %}selected{% endif %}>Cancelado</option>
     </select>
 
+    <!-- Ordenação por data -->
+    <select name="ordem">
+        <option value="desc" {% if request.GET.ordem == 'desc' or not request.GET.ordem %}selected{% endif %}>Mais recentes primeiro</option>
+        <option value="asc" {% if request.GET.ordem == 'asc' %}selected{% endif %}>Mais antigos primeiro</option>
+    </select>
+
     <button type="submit">Filtrar</button>
 
-    <!-- Botão para limpar a busca caso haja algum filtro ativo -->
-    {% if request.GET.q or request.GET.status %}
+    <!-- Botão para limpar a busca caso haja algum filtro/ordenação não padrão -->
+    {% if request.GET.q or request.GET.status or request.GET.ordem == 'asc' %}
     <a href="{% url 'lista-servicos' %}">Limpar Filtros</a>
     {% endif %}
 </form>
