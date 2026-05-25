@@ -4,6 +4,33 @@
 
 {% block content %}
 <h1>Lista de Serviços</h1>
+
+<form method="get">
+    <!-- Campo de busca geral (Nome do cliente ou descrição do serviço) -->
+    <input type="text" name="q" placeholder="Buscar cliente ou descrição..." value="{{ request.GET.q|default:'' }}">
+
+    <!-- Filtro por status do serviço -->
+    <select name="status">
+        <option value="">Todos os status</option>
+        <option value="P" {% if request.GET.status == 'P' %}selected{% endif %}>Pendente</option>
+        <option value="C" {% if request.GET.status == 'C' %}selected{% endif %}>Concluído</option>
+        <option value="X" {% if request.GET.status == 'X' %}selected{% endif %}>Cancelado</option>
+    </select>
+
+    <!-- Ordenação por data -->
+    <select name="ordem">
+        <option value="desc" {% if request.GET.ordem == 'desc' or not request.GET.ordem %}selected{% endif %}>Mais recentes primeiro</option>
+        <option value="asc" {% if request.GET.ordem == 'asc' %}selected{% endif %}>Mais antigos primeiro</option>
+    </select>
+
+    <button type="submit">Filtrar</button>
+
+    <!-- Botão para limpar a busca caso haja algum filtro/ordenação não padrão -->
+    {% if request.GET.q or request.GET.status or request.GET.ordem == 'asc' %}
+    <a href="{% url 'lista-servicos' %}">Limpar Filtros</a>
+    {% endif %}
+</form>
+
 <ul>
     {% for servico in servicos %}
     <li>
