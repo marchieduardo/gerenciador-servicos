@@ -1,10 +1,6 @@
 from django.contrib import admin
 from .models import Cliente, Servico, AnexoServico
 
-# Inline para permitir gerenciar anexos diretamente dentro da tela de Serviço
-class AnexoServicoInline(admin.TabularInline):
-    model = AnexoServico
-    extra = 1  # Quantidade de campos vazios para novos anexos que aparecerão por padrão
 
 @admin.register(Cliente)
 class ClienteAdmin(admin.ModelAdmin):
@@ -12,6 +8,13 @@ class ClienteAdmin(admin.ModelAdmin):
     list_filter = ('ativo',)
     search_fields = ('nome', 'documento', 'email', 'telefone', 'endereco')
     ordering = ('nome',)
+
+
+# Inline para permitir gerenciar anexos diretamente dentro da tela de Serviço
+class AnexoServicoInline(admin.TabularInline):
+    model = AnexoServico
+    extra = 1  # Quantidade de campos vazios para novos anexos que aparecerão por padrão
+
 
 @admin.register(Servico)
 class ServicoAdmin(admin.ModelAdmin):
