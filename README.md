@@ -85,6 +85,7 @@ gerenciador-servicos/
 │   └── base.html               # Template base com nav e footer
 │
 ├── .env                        # Variáveis de ambiente (não versionado)
+├── .env.example                # Modelo de variáveis (versionado)
 ├── .gitignore
 ├── db.sqlite3                  # Banco de dados SQLite (não versionado)
 ├── manage.py
@@ -131,15 +132,22 @@ pip install -r requirements.txt
 
 ## ⚙️ Configuração do Ambiente
 
-Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
+Copie o arquivo de exemplo e preencha os valores:
 
-```env
-SECRET_KEY=sua-chave-secreta-aqui
-DEBUG=True
-ALLOWED_HOSTS=127.0.0.1,localhost
+**Windows:**
+```powershell
+copy .env.example .env
 ```
 
-> ⚠️ **Nunca versione o arquivo `.env`** — ele já está incluído no `.gitignore`.
+**Linux / macOS:**
+```bash
+cp .env.example .env
+```
+
+Edite o `.env` e substitua `SECRET_KEY=sua-chave-secreta-aqui` por uma chave gerada (veja abaixo).
+
+> ⚠️ **Nunca versione o arquivo `.env`** — ele já está incluído no `.gitignore`.  
+> O modelo versionado é o `.env.example`.
 
 Para gerar uma `SECRET_KEY` segura, você pode usar o próprio Django:
 
@@ -195,6 +203,8 @@ Painel administrativo: [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admi
 ---
 
 ## 🔑 Variáveis de Ambiente
+
+Consulte `.env.example` para o modelo completo com comentários. Resumo:
 
 | Variável | Obrigatória | Descrição | Exemplo |
 |---|---|---|---|

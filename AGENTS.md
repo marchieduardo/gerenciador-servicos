@@ -19,3 +19,9 @@ Este arquivo define as regras de desenvolvimento para os assistentes de IA neste
 - **Idioma/Estilo:** Português (Brasil), Conventional Commits, linha única e caixa baixa.
 - **Formato:** `<tipo>(<escopo>): <descrição curta em minúsculas>`
 - **Tipos:** `feat`, `fix`, `refactor`, `style`, `docs`, `chore`, `test`.
+
+## 5. Variáveis de Ambiente
+- **Arquivos:** `.env` (local, não versionado) e `.env.example` (modelo versionado na raiz do projeto).
+- **Sincronização obrigatória:** Sempre que uma nova variável for adicionada, renomeada ou removida em `.env` ou em `app/settings.py` (ou outro código que leia variáveis de ambiente), atualize `.env.example` na mesma alteração.
+- **Conteúdo do exemplo:** Use placeholders seguros (nunca valores reais de produção). Inclua comentário breve por variável quando o nome não for autoexplicativo.
+- **Remoção:** Ao remover uma variável do projeto, remova-a também de `.env.example`.
