@@ -46,9 +46,6 @@ INSTALLED_APPS = [
     'accounts',
 ]
 
-# Define qual modelo de usuário será usado
-AUTH_USER_MODEL = 'accounts.Usuario'
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -130,3 +127,14 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Define qual modelo de usuário será usado
+AUTH_USER_MODEL = 'accounts.Usuario'
+
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailOuUsernameBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'lista-clientes'
+LOGOUT_REDIRECT_URL = 'login'
